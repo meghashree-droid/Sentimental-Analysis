@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>MovieSense | Analysis History</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1020, #19152f, #241538);
+            color: white;
+            padding: 50px 20px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 44px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #b9b4c9;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .review {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ffffff;
+            margin-bottom: 18px;
+        }
+        
+        .info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .badge {
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .positive {
+            background: rgba(46, 204, 113, 0.15);
+            color: #5cff9d;
+            border: 1px solid rgba(92, 255, 157, 0.3);
+        }
+        
+        .negative {
+            background: rgba(255, 80, 100, 0.15);
+            color: #ff7182;
+            border: 1px solid rgba(255, 113, 130, 0.3);
+        }
+        
+        .confidence {
+            color: #d8d2e5;
+        }
+        
+        .rating {
+            margin-top: 18px;
+            font-size: 22px;
+        }
+        
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 35px auto 0;
+            padding: 12px 25px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #b66cff, #ff5fa2);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(182, 108, 255, 0.3);
+        }
+        
+        .empty {
+            text-align: center;
+            color: #aaa5b8;
+            font-size: 18px;
+            padding: 50px;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 35px 15px;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📊 Analysis History</h1>
+
+        <p class="subtitle">
+            Your recent movie review predictions
+        </p>
+
+        {% if history %} {% for item in history %}
+
+        <div class="card">
+
+            <div class="review">
+                <strong>Review:</strong> {{ item.review }}
+            </div>
+
+            <div class="info">
+
+                {% if item.sentiment == "Positive" %}
+                <span class="badge positive">
+                            ✓ Positive
+                        </span> {% else %}
+                <span class="badge negative">
+                            ✗ Negative
+                        </span> {% endif %}
+
+                <span class="confidence">
+                        Confidence: {{ item.confidence }}%
+                    </span>
+
+            </div>
+
+            <div class="rating">
+                <strong>Rating:</strong> {{ "⭐" * item.rating }}
+            </div>
+
+        </div>
+
+        {% endfor %} {% else %}
+
+        <div class="card empty">
+            No analysis history yet.
+        </div>
+
+        {% endif %}
+
+        <a href="/" class="back-button">
+            ← Back to Analysis
+        </a>
+
+    </div>
+
+</body>
+
+</html>

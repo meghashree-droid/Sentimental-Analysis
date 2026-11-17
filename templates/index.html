@@ -1,31 +1,80 @@
 <!DOCTYPE html>
-<html >
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Deployment Tutorial 1</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
+    <meta charset="UTF-8">
+    <title>MovieSense | Sentiment Analysis</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
-<body style="background: #069;">
- <div class="login">
-	<h1>Sentiments Analysis</h1>
+<body>
+    <div class="login">
+        <h1>🎬 MovieSense</h1>
+        <p class="subtitle">AI-Powered Movie Review Sentiment Analysis</p>
 
-     <!-- Main Input For Receiving Query to our ML -->
+        <!-- Main Input For Receiving Query to our ML -->
 
-    <form action="{{ url_for('predict')}}"method="post">
-        <input type="text" name="Enter the product review here" placeholder="Enter the movie review here" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict Sentiment</button>
-    </form>
+        <form action="{{ url_for('predict')}}" method="post">
+            <textarea name="Enter the product review here" placeholder="Write your movie review here..." required="required"></textarea>
+            <button type="submit" class="btn btn-primary btn-block btn-large">Predict Sentiment</button>
+        </form>
 
-   <br>
-   <br>
-   {{ prediction_text }}
+        <a href="/history" class="history-button">
+        📊 View Analysis History
+        </a> {% if prediction_text %}
 
- </div>
+        <div class="result-card">
+
+            <div class="result-title">
+                {% if sentiment == "Positive" %} 😊 Positive Review {% else %} 😞 Negative Review {% endif %}
+            </div>
+
+            <div class="result-details">
+
+                <div class="result-item">
+                    <span>Confidence</span>
+                    <strong>{{ "%.2f"|format(confidence) }}%</strong>
+                </div>
+
+                <div class="result-item">
+                    <span>Predicted Rating</span>
+                    <strong>{{ stars }} <small>({{ rating }}/5)</small></strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %} {% if positive_words or negative_words %}
+
+        <div class="insights">
+
+            <h3>🔎 Review Insights</h3>
+
+            {% if positive_words %}
+            <p><strong>Positive indicators</strong></p>
+            <p class="positive-words">
+                ✓ {{ positive_words | join(", ") }}
+            </p>
+            {% endif %} {% if negative_words %}
+            <p><strong>Negative indicators</strong></p>
+            <p class="negative-words">
+                ✗ {{ negative_words | join(", ") }}
+            </p>
+            {% endif %} {% if not positive_words and not negative_words %}
+            <p>No specific sentiment indicators detected.</p>
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
 </body>
+
 </html>
